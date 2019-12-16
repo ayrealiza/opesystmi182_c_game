@@ -1,11 +1,11 @@
 # Makefile
 
-CC = gcc
+CC = gcc 
 
 LDLIBS=-lncurses
-
 SRCS := $(wildcard *.c)
 BINS := $(SRCS:%.c=%)
+
 
 all: ${BINS}
 
