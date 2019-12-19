@@ -1,17 +1,18 @@
-
+ 	 	
 #include <ncurses.h>
+#include <stdio.h>
 typedef struct{short int x, y, c; bool movhor, movver;} object;
-
 main() {
   object scr; int i = 0,cont=0; bool end=false;
   initscr();
   start_color();
-  init_pair(1,COLOR_WHITE,COLOR_BLACK);
+  init_pair(1,COLOR_CYAN,COLOR_CYAN);
+  init_pair(2,COLOR_CYAN,COLOR_BLACK);
   keypad(stdscr,true);
   noecho();
   curs_set(0);
   getmaxyx(stdscr,scr.y,scr.x);
-  object b1={scr.x-2,scr.y/2,0,false,false},b2={1,scr.y/2,0,false,false},b={scr.x/2,scr.y/2,0,false,false};
+  object b1={scr.x-5,scr.y/5,0,false,false},b2={4,scr.y/5,0,false,false},b={scr.x/5,scr.y/5,0,false,false};
   mvprintw(4,0,
   "\t \tCONTROLS\n"
   "\t \n"
@@ -29,7 +30,7 @@ main() {
     if (++cont%16==0){
       if ((b.y==scr.y-1)||(b.y==1))
         b.movver=!b.movver;
-      if ((b.x>=scr.x-2)||(b.x<=2)){
+      if ((b.x>=scr.x-5)||(b.x<=5)){
         b.movhor=!b.movhor;
         if ((b.y==b1.y-1)||(b.y==b2.y-1)) {
           b.movver=false;
@@ -62,13 +63,16 @@ main() {
       case 0x1B:    endwin(); end++; break;
     }
     erase();
+    attron(COLOR_PAIR(2));
     mvprintw(2,scr.x/2-2,"%i | %i",b1.c,b2.c);
-    mvvline(0,scr.x/2,ACS_VLINE,scr.y);
     attron(COLOR_PAIR(1));
-    mvprintw(b.y,b.x,"o");
+    mvvline(0,scr.x/2,ACS_VLINE,scr.y);
+    attron(COLOR_PAIR(2));
+    mvprintw(b.y,b.x,"(o)");
     for(i=-1;i<2;i++){
-      mvprintw(b1.y+i,b1.x,"|");
-      mvprintw(b2.y+i,b2.x,"|");}
-    attroff(COLOR_PAIR(1));
+      attron(COLOR_PAIR(2));
+      mvprintw(b1.y+i,b1.x,"[>");
+      mvprintw(b2.y+i,b2.x,"<]");}
+
   }
 }
